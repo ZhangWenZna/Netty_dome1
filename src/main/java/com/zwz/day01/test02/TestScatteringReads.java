@@ -1,0 +1,36 @@
+package com.zwz.day01.test02;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
+/*
+分散读取
+ */
+public class TestScatteringReads {
+    public static void main(String[] args) {
+        try (FileChannel channel = new RandomAccessFile("/Users/macos/Netty/src/main/java/com/zwz/day01/test02/data01.txt", "r").getChannel()){
+            ByteBuffer b1 = ByteBuffer.allocate(3);
+            ByteBuffer b2 = ByteBuffer.allocate(3);
+            ByteBuffer b3 = ByteBuffer.allocate(5);
+            channel.read(new ByteBuffer[]{b1,b2,b3});
+            b1.flip();
+            b2.flip();
+            b3.flip();
+            System.out.println((char)b1.get());
+            System.out.println((char)b1.get());
+            System.out.println((char)b1.get());
+            System.out.println((char)b2.get());
+            System.out.println((char)b2.get());
+            System.out.println((char)b2.get());
+            System.out.println((char)b3.get());
+            System.out.println((char)b3.get());
+            System.out.println((char)b3.get());
+            System.out.println((char)b3.get());
+            System.out.println((char)b3.get());
+        } catch (IOException e) {
+        }
+    }
+}
