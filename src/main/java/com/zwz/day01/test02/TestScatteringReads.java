@@ -11,7 +11,7 @@ import java.nio.channels.FileChannel;
  */
 public class TestScatteringReads {
     public static void main(String[] args) {
-        try (FileChannel channel = new RandomAccessFile("/Users/macos/Netty/src/main/java/com/zwz/day01/test02/data01.txt", "r").getChannel()){
+        try (FileChannel channel = new RandomAccessFile("/Users/macos/Netty/src/main/java/com/zwz/day01/test02/file/data01.txt", "r").getChannel()){
             ByteBuffer b1 = ByteBuffer.allocate(3);
             ByteBuffer b2 = ByteBuffer.allocate(3);
             ByteBuffer b3 = ByteBuffer.allocate(5);

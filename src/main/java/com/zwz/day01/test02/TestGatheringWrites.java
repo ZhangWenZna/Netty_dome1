@@ -11,7 +11,7 @@ public class TestGatheringWrites {
         ByteBuffer b1 = StandardCharsets.UTF_8.encode("hello");
         ByteBuffer b2 = StandardCharsets.UTF_8.encode("word");
         ByteBuffer b3 = StandardCharsets.UTF_8.encode("你好");
-        try (FileChannel channel = new RandomAccessFile("/Users/macos/Netty/src/main/java/com/zwz/day01/test02/data02.txt", "rw").getChannel()) {
+        try (FileChannel channel = new RandomAccessFile("/Users/macos/Netty/src/main/java/com/zwz/day01/test02/file/data02.txt", "rw").getChannel()) {
             channel.write(new ByteBuffer[]{b1,b2,b3});
         } catch (IOException e) {
             System.out.println("异常");
