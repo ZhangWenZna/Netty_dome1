@@ -20,11 +20,10 @@ import java.util.List;
  * write --可写事件
  *
  *
- *
- * 请求事件
+ * 读事件
  */
 @Slf4j
-public class Server03 {
+public class Server04 {
     public static void main(String[] args) throws Exception{
         //2.创建Selector
         Selector selector = Selector.open();//管理多个Channel
@@ -50,9 +49,24 @@ public class Server03 {
             while (iter.hasNext()){
                 SelectionKey key = iter.next();
                 log.debug("key:{}",key);
-                ServerSocketChannel channel = (ServerSocketChannel) key.channel();
-                SocketChannel sc = channel.accept();
-                log.debug("{}",sc);
+                //5.区分事件类型
+                if (key.isAcceptable()) {
+                    ServerSocketChannel channel = (ServerSocketChannel) key.channel();
+                    SocketChannel sc = channel.accept();
+                    sc.configureBlocking(false);
+                    SelectionKey scKey = sc.register(selector, 0, null);
+                    scKey.interestOps(SelectionKey.OP_READ);
+                    log.debug("{}",sc);
+                } else if (key.isReadable()) {
+                    SocketChannel channel=(SocketChannel)key.channel();
+                    ByteBuffer readBuffer=ByteBuffer.allocate(10);
+                    channel.read(readBuffer);
+                    readBuffer.flip();
+                    System.out.println(readBuffer.get());
+                    System.out.println(readBuffer.get());
+
+                }
+
             }
         }
     }
