@@ -1,9 +1,12 @@
 package com.zwz.day01.test04;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 
 /**
@@ -20,7 +23,7 @@ import java.util.Iterator;
  * 读事件
  */
 @Slf4j
-public class Server04 {
+public class Server05 {
     public static void main(String[] args) throws Exception{
         //2.创建Selector
         Selector selector = Selector.open();//管理多个Channel
@@ -57,12 +60,20 @@ public class Server04 {
                     scKey.interestOps(SelectionKey.OP_READ);
                     log.debug("{}",sc);
                 } else if (key.isReadable()) {
-                    SocketChannel channel=(SocketChannel)key.channel();
-                    ByteBuffer readBuffer=ByteBuffer.allocate(10);
-                    channel.read(readBuffer);
-                    readBuffer.flip();
-                    System.out.println(readBuffer.get());
-                    System.out.println(readBuffer.get());
+                    try {
+                        SocketChannel channel=(SocketChannel)key.channel();
+                        ByteBuffer readBuffer=ByteBuffer.allocate(10);
+                        int read = channel.read(readBuffer);//如果正常断开返回-1
+                        if(read==1){
+                            key.channel();
+                        }
+                        readBuffer.flip();
+                        System.out.println(readBuffer.get());
+                        System.out.println(readBuffer.get());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        key.channel();//因为客户端断开，所以需要将key取消（从selector中删除）
+                    }
 
                 }
 
